@@ -34,10 +34,11 @@ def Boxplot(Station, pic_dic, config_name, graph_class, USL, LSL, data, Upper_Ax
 
     title_name = data.columns[-1].split(' ')[0]
     title_1st = title_name + " N:%d" % N_label + '\n'
-    title_2nd = 'Stdev:['
+    title_2nd = 'CPK:['
 
     std_list = []
     std_list_label = []
+    cpk_list_label = []
     mean_list = []
     cpk_list = []
     USL = pd.Series(USL, index=data.columns)
@@ -45,6 +46,7 @@ def Boxplot(Station, pic_dic, config_name, graph_class, USL, LSL, data, Upper_Ax
     for i in data.columns:
         mean_value, std_value, cpk_value = cpk(LSL[i], USL[i], data[i])
         std_list_label.append("'" + str(round(std_value, 2)) + "'")
+        cpk_list_label.append("'" + str(round(cpk_value, 2)) + "'")
         std_list.append(std_value)
         mean_list.append(mean_value)
         cpk_list.append(cpk_value)
@@ -52,7 +54,8 @@ def Boxplot(Station, pic_dic, config_name, graph_class, USL, LSL, data, Upper_Ax
     save_box = pd.DataFrame([data.columns, USL, LSL, mean_list, std_list, cpk_list],
                             index=['Item', 'USL', 'LSL', 'Mean', 'STDEV', 'CPK'])
 
-    title_2nd = title_2nd + ','.join(std_list_label) + ']'
+    #   title_2nd = title_2nd + ','.join(std_list_label) + ']'
+    title_2nd = title_2nd + ','.join(cpk_list_label) + ']'
 
     title = title_1st + title_2nd
 
